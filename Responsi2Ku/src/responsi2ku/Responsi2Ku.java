@@ -1,5 +1,3 @@
-package responsi2ku;
-
 import java.sql.*;
 import java.util.*;
 
