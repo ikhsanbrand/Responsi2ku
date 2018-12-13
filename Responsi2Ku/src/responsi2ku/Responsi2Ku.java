@@ -1,3 +1,5 @@
+package responsi2ku;
+
 import java.sql.*;
 import java.util.*;
 
@@ -5,7 +7,6 @@ import java.util.*;
  *
  * @author IKHSAN
  */
-
 public class Responsi2Ku {
 
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
@@ -73,25 +74,34 @@ public class Responsi2Ku {
     }
 
     static void menu1() throws SQLException {
-        alamat = null;
         System.out.println("==========================");
-        System.out.println("Nambah Sales");
-        System.out.print("Masukkan Nomor Sales : ");
-        nosal = input1.next();
-        System.out.print("Masukkan Nama : ");
-        nama = input2.nextLine();
-        System.out.print("Masukkan Brand : ");
-        brand = input3.next();
-        System.out.print("Masukkan Alamat : ");
-        alamat = input4.nextLine();
-        sql = "INSERT INTO member(`nosal`,`nama`,`brand`,`alamat`) value(?,?,?,?)";
+        System.out.println("Nambah");
+        System.out.print("Masukkan Nosal : ");
+        nosal = input1.nextLine();
+        sql = "SELECT*FROM member WHERE nosal = ?";
         preparedStmt = conn.prepareStatement(sql);
         preparedStmt.setString(1, nosal);
-        preparedStmt.setString(2, nama);
-        preparedStmt.setString(3, brand);
-        preparedStmt.setString(4, alamat);
         preparedStmt.execute();
-        System.out.println("Data berhasil di masukan !");
+        if (preparedStmt.getResultSet().next()) {
+            System.out.println("Data Sudah Ada Boss");
+        } else {
+            alamat = null;
+            System.out.print("Masukkan Nama : ");
+            nama = input2.next();
+            System.out.print("Masukkan Brand : ");
+            brand = input3.next();
+            System.out.print("Masukkan Alamat : ");
+            alamat = input4.next();
+            sql = "INSERT INTO member(`nosal`,`nama`,`brand`,`alamat`) value(?,?,?,?)";
+            preparedStmt = conn.prepareStatement(sql);
+            preparedStmt.setString(1, nosal);
+            preparedStmt.setString(2, nama);
+            preparedStmt.setString(3, brand);
+            preparedStmt.setString(4, alamat);
+            preparedStmt.execute();
+            System.out.println("Data berhasil di masukan !");
+            System.out.println("==========================");
+        }
         System.out.println("==========================");
     }
 
@@ -120,23 +130,40 @@ public class Responsi2Ku {
     static void menu3() throws SQLException {
         System.out.println("==========================");
         System.out.println("Update");
-        System.out.print("Masukkan Nomor Sales : ");
-        nosal = input1.next();
-        System.out.print("Masukkan Nama : ");
-        nama = input2.nextLine();
-        System.out.print("Masukkan Alamat : ");
-        alamat = input3.nextLine();
-        System.out.print("Masukkan Brand : ");
-        brand = input4.next();
-        sql = "UPDATE member SET nama = ? , brand = ? , alamat = ? where nosal = ?";
+        System.out.print("Masukkan Nosal : ");
+        nosal = input1.nextLine();
+        sql = "SELECT*FROM member WHERE nosal = ?";
         preparedStmt = conn.prepareStatement(sql);
-        preparedStmt.setString(4, nosal);
-        preparedStmt.setString(1, nama);
-        preparedStmt.setString(2, brand);
-        preparedStmt.setString(3, alamat);
+        preparedStmt.setString(1, nosal);
         preparedStmt.execute();
-        System.out.println("Data berhasil di update !");
+        if (preparedStmt.getResultSet().next()) {
+            System.out.println("Data Di Temukan Dapat Di Update");
+            System.out.println("==========================");
+            System.out.println("Update");
+            System.out.print("Masukkan Nomor Sales : ");
+            nosal = input1.next();
+            System.out.print("Masukkan Nama : ");
+            nama = input2.next();
+            System.out.print("Masukkan Alamat : ");
+            alamat = input3.next();
+            System.out.print("Masukkan Brand : ");
+            brand = input4.next();
+            sql = "UPDATE member SET nama = ? , brand = ? , alamat = ? where nosal = ?";
+            preparedStmt = conn.prepareStatement(sql);
+            preparedStmt.setString(4, nosal);
+            preparedStmt.setString(1, nama);
+            preparedStmt.setString(2, brand);
+            preparedStmt.setString(3, alamat);
+            preparedStmt.execute();
+            System.out.println("Data berhasil di update !");
+            System.out.println("==========================");
+            arlist.clear();
+            i = 0;
+        } else {
+            System.out.println("Data Tidak Ada Boss");
+        }
         System.out.println("==========================");
+
     }
 
     static void menu4() throws SQLException {
